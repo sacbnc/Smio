@@ -4,7 +4,7 @@ CREATE SEQUENCE log_seq START 1;
 DROP TABLE log;
 CREATE TABLE log
 (
-    id             INT4 DEFAULT nextval('log_seq') NOT NULL,
+    id             INT4 DEFAULT nextval('log_seq'),
     ts             TIMESTAMP,
     instrument     TEXT,
     granularity    TEXT,
