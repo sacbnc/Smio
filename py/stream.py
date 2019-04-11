@@ -1,4 +1,3 @@
-import sys
 import py.api as api
 
 class Stream:
@@ -23,7 +22,11 @@ class Stream:
 
     def __init__(self, logger):
         self.logger = logger
+        self.logger.log_info(self.name, "Starting...")
+
         self.instrument = logger.instrument
         self.granularity = logger.granularity
 
-        self.logger.log_info(self.name, "Stream established")
+        startup_str = "Started successfully with: parameters: instrument=%s, granularity=%d" \
+                      % (self.instrument, self.granularity)
+        self.logger.log_info(self.name, startup_str)

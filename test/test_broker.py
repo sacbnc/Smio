@@ -3,7 +3,7 @@ from py.logger import Logger
 from py.order import Order
 from py.broker import Broker
 
-class StreamTestCase(unittest.TestCase):
+class BrokerTestCase(unittest.TestCase):
 
     def testPlaceOrder(self):
         logger = Logger(0, "EUR_USD", 30)

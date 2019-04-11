@@ -13,8 +13,9 @@ class Broker:
         units = self.get_units()
         units = -units if order.direction == -1 else units
 
-        print("Order open:", order.open)
-        print("TRL:", order.trl)
+        self.logger.log_info(self.name,"Received order: units=%d, open=%f, tp=%f, sl=%f, trl=%f"
+                             % (units, order.open, order.tp, order.sl, order.trl))
+
         trade_id, error_message = api.place_order(api.get_context(),
                                                   self.account,
                                                   self.instrument,
@@ -35,9 +36,13 @@ class Broker:
     def __init__(self, id, logger, risk, account):
         self.id = id
         self.logger = logger
+        self.logger.log_info(self.name, "Starting...")
+
         self.risk = risk
         self.instrument = logger.instrument
         self.account = account
 
-        self.logger.log_info(self.name, "Ready to place orders")
+        startup_str = "Started successfully with: parameters: risk=%d, account=%s" \
+                      % (risk, account)
+        self.logger.log_info(self.name, startup_str)
 

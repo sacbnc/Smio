@@ -36,30 +36,30 @@ class IntelligenceTestCase(unittest.TestCase):
     def testBuyOrders(self):
         # no order for sequence of 1
         order = self.intelligence.input(self.state)
-        self.assertEqual((order), True)
+        self.assertIsNone(order)
 
         # order for sequence of 3 and above ma
         self.state.sequence = 3
         self.state.ma = self.state.position - 1
         order = self.intelligence.input(self.state)
 
-        self.assertEqual((order), True)
+        self.assertIsNotNone(order)
         self.assertEqual(order.direction, 1)
         self.assertEqual(order.open, self.state.level(self.distance))
         self.assertEqual(order.tp, self.state.level(self.distance + self.tp))
         self.assertEqual(order.sl, self.state.level(self.distance - self.sl))
-        self.assertEqual(order.trl, self.state.level(self.distance - self.trl))
+        self.assertEqual(order.trl, order.open - order.sl)
 
         # no order for sequence of 3 and below ma
         self.state.ma = self.state.position + 1
         order = self.intelligence.input(self.state)
-        self.assertEqual((order), False)
+        self.assertIsNone(order)
 
         # no take profit
         self.intelligence.tp = 0
         self.state.ma = self.state.position - 1
         order = self.intelligence.input(self.state)
-        self.assertEqual((order), True)
+        self.assertIsNotNone(order)
 
 
 
@@ -69,16 +69,16 @@ class IntelligenceTestCase(unittest.TestCase):
         self.state.ma = self.state.position + 1
         order = self.intelligence.input(self.state)
 
-        self.assertEqual(order, True)
+        self.assertIsNotNone(order)
         self.assertEqual(order.direction, -1)
         self.assertEqual(order.tp, self.state.level(-self.distance - self.tp))
         self.assertEqual(order.sl, self.state.level(-self.distance + self.sl))
-        self.assertEqual(order.trl, self.state.level(-self.distance + self.trl))
+        self.assertEqual(order.trl, order.sl - order.open)
 
-        # order for sequence of -3 and above ma
+        # No order for sequence of -3 and above ma
         self.state.ma = self.state.position - 1
         order = self.intelligence.input(self.state)
-        self.assertEqual(order)
+        self.assertIsNone(order)
 
 
 

@@ -28,7 +28,7 @@ class Intelligence():
     def input(self, state):
         if abs(state.sequence) < self.min_seq:
             self.logger.log_info(self.name, "Order not populated, seq abs(%d) < min seq %d" %(state.sequence, self.min_seq))
-            return False, None
+            return None
 
         if self.use_mac and not state.mac:
             self.logger.log_info(self.name, "Order not populated, price is on the wrong side of the MA")
@@ -38,19 +38,18 @@ class Intelligence():
         return self.get_order(state)
 
     def __init__(self, id, output, logger, distance, tp, sl, trl, min_seq, use_mac):
-        self.logger = logger
-        self.output = output
         self.id = id
+        self.output = output
+        self.logger = logger
+        self.logger.log_info(self.name, "Starting...")
 
         self.distance = distance
         self.tp = round(tp, 5) if tp > 0 else None
         self.sl = round(sl, 5) if sl > 0 else None
         self.trl = round(trl, 5) if trl > 0 else None
         self.min_seq = min_seq
-
-        # moving average composition
-        # is the up sequence above the ma
-        # is the down sequence below the ma
         self.use_mac = use_mac
 
-        self.logger.log_info(self.name, "Intelligence started")
+        startup_str = "Started successfully with parameters: distance=%d, tp=%d, sl=%d, trl=%d, min_seq=%d" \
+                      % (distance, tp, sl, trl, min_seq)
+        logger.log_info(self.name, startup_str)

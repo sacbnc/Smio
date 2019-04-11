@@ -58,7 +58,6 @@ count = 0
 while True:
 
     while next_candle.date == candle.date:
-        logger.log_info(name(), "Heartbeat")
         next_minute = datetime.now().replace(second=1) + timedelta(minutes=1)
         time.sleep((next_minute - datetime.now()).total_seconds())
         next_candle = stream.get_candle()

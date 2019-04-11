@@ -34,19 +34,21 @@ class Model:
         self.id = id
         self.output = output
         self.logger = logger
+        self.logger.log_info(self.name, "Starting...")
 
         # increment atr_len by 1 so first
         # can be used to calculate the TR
         self.atr_len = atr_len + 1
         self.ma_len = ma_len
 
-
         self.continuation = continuation
         self.reversal = reversal
 
         # check number of candles is enough to build
         if len(init_candles) < max(self.atr_len, self.ma_len):
-            raise Exception(len(init_candles), "is not enough to build model")
+            error_message = "%d is not enough to build model" % len(init_candles)
+            logger.log_fail(self.name, error_message)
+            raise Exception(error_message)
 
         # the number of candles needed to create ATR and MA
         self.retention = max(self.atr_len, self.ma_len)
@@ -60,4 +62,7 @@ class Model:
         for candle in init_candles[self.retention:]:
             self.input(candle)
 
-        self.logger.log_info(self.name, "Model built")
+        startup_str = "Started successfully with: parameters: atr_len=%d, ma_len=%d continuation=%d, reversal=%d" \
+                      %(atr_len, ma_len, continuation, reversal)
+        self.logger.log_info(self.name, startup_str)
+
