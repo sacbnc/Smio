@@ -63,7 +63,7 @@ def get_candles_ema(candles):
 
 # Database
 
-def get_db_connection(host="localhost", database="wfcm", user="postgres", password="postgres"):
+def get_db_connection(host="localhost", database="wfcm", user="wfcm", password="wfcm"):
     return postgres.connect(host=host, database=database, user=user, password=password)
 
 def write_to_db(sql):
