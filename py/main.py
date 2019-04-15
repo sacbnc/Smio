@@ -55,7 +55,7 @@ Main
 candle = stream.get_candle()
 next_candle = copy.copy(candle)
 
-next_candle.date = next_candle.date.replace(second=2)
+next_candle.date = candle.date.replace(second=2)
 count = 0
 
 while True:

@@ -17,13 +17,13 @@ class Model:
         ma = utils.get_candles_ema(self.candles[-self.ma_len:])
 
         if self.state.update(candle, atr, ma):
-            update_str = "State changed: sequence=%d, atr=%d, ma=%d, open=%f, cont=%f, rev=%f" \
+            update_str = "State changed: sequence=%d, atr=%f, ma=%f, open=%f, cont=%f, rev=%f" \
                          % (self.state.sequence, atr, ma, self.state.position,
                             self.state.next_brick, self.state.close_brick)
             self.logger.log_info(self.name, update_str)
             return self.state
 
-        update_str = "No change to state: sequence=%d, atr=%d, ma=%d, open=%f, cont=%f, rev=%f" \
+        update_str = "No change to state: sequence=%d, atr=%f, ma=%f, open=%f, cont=%f, rev=%f" \
                      % (self.state.sequence, atr, ma, self.state.position,
                         self.state.next_brick, self.state.close_brick)
         self.logger.log_info(self.name, update_str)
