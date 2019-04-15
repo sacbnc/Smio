@@ -39,6 +39,7 @@ def get_atr(tr_values, last_atr=None):
 
     return float("{0:.5f}".format(tr_avg))
 
+
 def get_tr(old_candle, new_candle):
     return max(abs(new_candle.high - new_candle.low),
                abs(new_candle.high - old_candle.close),
@@ -50,7 +51,7 @@ def get_tr(old_candle, new_candle):
 def get_ema(values):
     df = pd.DataFrame(values)
 
-    return df.ewm(span=len(values), adjust=False).mean().iloc[1][0]
+    return df.ewm(span=len(values), adjust=False).mean().iloc[-1][0]
 
 
 def get_candles_ema(candles):

@@ -29,7 +29,7 @@ class ModelTestCase(unittest.TestCase):
                            candles[-1].volume))
 
         logger = Logger(0, "TST_SYM", 30)
-        return Model(0, 0, logger, candles, atr_len, ma_len)
+        return Model(0, '0', logger, candles, atr_len, ma_len)
 
     def testModelInit(self):
         self.model = self.getUpModel()

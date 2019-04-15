@@ -81,21 +81,5 @@ class IntelligenceTestCase(unittest.TestCase):
         self.assertIsNone(order)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
     unittest.main()

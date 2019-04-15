@@ -4,6 +4,7 @@ import py.config as config
 from datetime import datetime
 from datetime import timedelta
 from py.logger import Logger
+import copy
 
 
 
@@ -52,7 +53,9 @@ Main
 """
 
 candle = stream.get_candle()
-next_candle = candle
+next_candle = copy.copy(candle)
+
+next_candle.date = next_candle.date.replace(second=2)
 count = 0
 
 while True:
@@ -67,12 +70,12 @@ while True:
 
     for model in models:
         state = model.input(candle)
-
         if state is not None:
-            order = intelligences[model.output].input(state)
-            print(order.open, candle.close)
-            if order is not None:
-                brokers[intelligences[model.output].output].input(order)
+            state.sequence = 3
+            for output in model.output:
+                order = intelligences[output].input(state)
+                if order is not None:
+                    brokers[intelligences[output].output].input(order)
 
 
 

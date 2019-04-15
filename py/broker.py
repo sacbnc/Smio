@@ -7,14 +7,19 @@ class Broker:
         return "%s %s" %(self.__class__.__name__, self.id)
 
     def get_units(self):
-        return 1000
+        return 8000
 
     def input(self, order):
         units = self.get_units()
         units = -units if order.direction == -1 else units
 
-        self.logger.log_info(self.name,"Received order: units=%d, open=%f, tp=%f, sl=%f, trl=%f"
-                             % (units, order.open, order.tp, order.sl, order.trl))
+        try:
+            update_message = "Received order proposal: units=%d, open=%f, tp=%f, sl=%f, trl=%f" \
+                             % (units, order.open, order.tp, order.sl, order.trl)
+            self.logger.log_info(self.name, update_message)
+        except Exception:
+            self.logger.log_fail(self.name, "Received order with undeclared field(s) (None)")
+            return False
 
         trade_id, error_message = api.place_order(api.get_context(),
                                                   self.account,
@@ -26,12 +31,11 @@ class Broker:
                                                   order.trl)
 
         if error_message:
-            self.logger.log_fail(self.name, "Order failed: %s" % error_message)
+            self.logger.log_fail(self.name, "Order failed for %s with error: %s" % (order.author, error_message))
             return False
 
-        self.logger.log_info(self.name, "Order placed: %s" % trade_id)
+        self.logger.log_info(self.name, "Order %s placed for %s" % (trade_id, order.author))
         return True
-
 
     def __init__(self, id, logger, risk, account):
         self.id = id

@@ -88,13 +88,20 @@ def place_order(context,
                 stop_loss,
                 trailing_stop):
 
-    if take_profit is not None:
+    if take_profit > 0:
         take_profit = v20.transaction.TakeProfitOrderTransaction(price=take_profit)
+    else:
+        take_profit = None
 
-    if stop_loss is not None:
+    if stop_loss > 0:
         stop_loss = v20.transaction.StopLossOrderTransaction(price=stop_loss)
-    if trailing_stop is not None:
+    else:
+        stop_loss = None
+
+    if trailing_stop > 0:
         trailing_stop = v20.transaction.TrailingStopLossOrderTransaction(distance=trailing_stop)
+    else:
+        trailing_stop = None
 
     response = context.order.limit(accountID=account_id,
                                    instrument=instrument,

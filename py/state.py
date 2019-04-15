@@ -10,6 +10,22 @@ class State:
         return self.sequence < 0
 
     @property
+    def next_brick(self):
+        if self.up:
+            return self.level(self.continuation)
+        elif self.down:
+            return self.level(-self.continuation)
+        return None
+
+    @property
+    def close_brick(self):
+        if self.up:
+            return self.level(-self.reversal)
+        elif self.down:
+            return self.level(self.reversal)
+        return None
+
+    @property
     def mac(self):
         """
         moving average composition.
@@ -33,6 +49,12 @@ class State:
 
         change = candle.close - self.position
 
+        # re-calculate interval and ma
+        # this means that new brick sizes
+        # will reflect the current atr
+        self.interval = atr
+        self.ma = ma
+
         # get either 1 or -1
         direction = 1 if change > 0 else -1
 
@@ -52,8 +74,6 @@ class State:
         else:
             return False
 
-        self.interval = atr
-        self.ma = ma
         return True
 
     def __init__(self, candle, atr, ma, continuation=1, reversal=2):

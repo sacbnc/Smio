@@ -19,7 +19,7 @@ CREATE TABLE model_config
 (
     id             INTEGER,
     implementation INTEGER,
-    output         INTEGER,
+    output         TEXT,
     atr            INTEGER,
     ma             INTEGER,
     continuation   INTEGER,

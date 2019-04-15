@@ -17,10 +17,16 @@ class Model:
         ma = utils.get_candles_ema(self.candles[-self.ma_len:])
 
         if self.state.update(candle, atr, ma):
-            self.logger.log_info(self.name, "State changed on update, new sequence is %s" % self.state.sequence)
+            update_str = "State changed: sequence=%d, atr=%d, ma=%d, open=%f, cont=%f, rev=%f" \
+                         % (self.state.sequence, atr, ma, self.state.position,
+                            self.state.next_brick, self.state.close_brick)
+            self.logger.log_info(self.name, update_str)
             return self.state
 
-        self.logger.log_info(self.name, "Updated model with no state change")
+        update_str = "No change to state: sequence=%d, atr=%d, ma=%d, open=%f, cont=%f, rev=%f" \
+                     % (self.state.sequence, atr, ma, self.state.position,
+                        self.state.next_brick, self.state.close_brick)
+        self.logger.log_info(self.name, update_str)
         return None
 
 
@@ -32,7 +38,7 @@ class Model:
     """
     def __init__(self, id, output, logger, init_candles, atr_len, ma_len, continuation=1, reversal=2):
         self.id = id
-        self.output = output
+        self.output = [int(x) for x in output.split(",")]
         self.logger = logger
         self.logger.log_info(self.name, "Starting...")
 

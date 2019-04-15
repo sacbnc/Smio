@@ -12,7 +12,7 @@ class Intelligence():
         sl = round(state.level(self.distance - self.sl), 5) if self.sl else self.sl
         trl = round(open - sl, 5) if self.trl else self.trl
 
-        return Order(1, open, tp, sl, trl)
+        return Order(self.name, 1, open, tp, sl, trl)
 
     def sell_order(self, state):
         open = state.level(-self.distance)
@@ -20,7 +20,7 @@ class Intelligence():
         sl = round(state.level(-self.distance + self.sl), 5) if self.sl else self.sl
         trl = round(sl - open, 5) if self.trl else self.trl
 
-        return Order(-1, open, tp, sl, trl)
+        return Order(self.name, -1, open, tp, sl, trl)
 
     def get_order(self, state):
         return self.buy_order(state) if state.up else self.sell_order(state)
@@ -34,8 +34,12 @@ class Intelligence():
             self.logger.log_info(self.name, "Order not populated, price is on the wrong side of the MA")
             return None
 
-        self.logger.log_info(self.name, "Order populated")
-        return self.get_order(state)
+        order = self.get_order(state)
+        update_str = "Order populated: open=%f, tp=%f, sl=%f, trl=%f" \
+                     % (order.open, order.tp, order.sl, order.trl)
+        self.logger.log_info(self.name, update_str)
+
+        return order
 
     def __init__(self, id, output, logger, distance, tp, sl, trl, min_seq, use_mac):
         self.id = id
@@ -44,9 +48,9 @@ class Intelligence():
         self.logger.log_info(self.name, "Starting...")
 
         self.distance = distance
-        self.tp = round(tp, 5) if tp > 0 else None
-        self.sl = round(sl, 5) if sl > 0 else None
-        self.trl = round(trl, 5) if trl > 0 else None
+        self.tp = round(tp, 5) #if tp > 0 else None
+        self.sl = round(sl, 5) #if sl > 0 else None
+        self.trl = round(trl, 5) #if trl > 0 else None
         self.min_seq = min_seq
         self.use_mac = use_mac
 
