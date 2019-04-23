@@ -62,7 +62,6 @@ class IntelligenceTestCase(unittest.TestCase):
         self.assertIsNotNone(order)
 
 
-
     def testSellOrders(self):
         # order for sequence of -3 and below ma
         self.state.sequence = -3

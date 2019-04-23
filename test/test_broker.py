@@ -5,7 +5,7 @@ from py.broker import Broker
 
 class BrokerTestCase(unittest.TestCase):
 
-    def testPlaceOrder( self):
+    def testPlaceOrder(self):
         logger = Logger(0, "EUR_USD", 30)
         broker = Broker(0, logger, 0.025, '101-004-4759925-003')
         order = Order("Unit test", 1, 1.0020, 0, 1, 1)
