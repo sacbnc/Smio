@@ -14,13 +14,13 @@ class Stream:
             return None
 
     def get_candle(self):
-        try:
-            new_candle = api.get_last_candle(self.instrument, self.granularity)
+        while True:
+            try:
+                new_candle = api.get_last_candle(self.instrument, self.granularity)
 
-            return new_candle
-        except Exception as err:
-            self.logger.log_fail(self.name, "Failed getting candle: %s" % err)
-            return None
+                return new_candle
+            except Exception as err:
+                self.logger.log_fail(self.name, "Failed getting candle: %s" % err)
 
     def __init__(self, logger):
         self.logger = logger
