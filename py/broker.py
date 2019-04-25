@@ -25,10 +25,10 @@ class Broker:
                                                   self.account,
                                                   self.instrument,
                                                   units,
-                                                  round(order.open, 5),
-                                                  round(order.tp, 5),
-                                                  round(order.sl, 5),
-                                                  round(order.trl, 5))
+                                                  round(order.open, 4),
+                                                  round(order.tp, 4),
+                                                  round(order.sl, 4),
+                                                  round(order.trl, 4))
 
         if error_message:
             self.logger.log_fail(self.name, "Order failed for %s with error: %s" % (order.author, error_message))
